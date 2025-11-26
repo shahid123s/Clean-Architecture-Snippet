@@ -328,6 +328,7 @@ GET /users/:id
 }
 ```
 
+
 ---
 
 ## 🏗️ Architecture Deep Dive
