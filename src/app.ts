@@ -1,10 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const sendResponse = require('./infrastructure/utils/response.util');
+import express, { Express, Router, Request, Response } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import { sendResponse } from './infrastructure/utils/response.util';
 
-const createApp = (userRoutes) => {
+export const createApp = (userRoutes: Router): Express => {
     const app = express();
 
     // Middleware
@@ -17,16 +17,14 @@ const createApp = (userRoutes) => {
     app.use('/api/v1/users', userRoutes);
 
     // Root Endpoint
-    app.get('/', (req, res) => {
+    app.get('/', (req: Request, res: Response) => {
         sendResponse(res, 200, true, 'Welcome to the Clean Architecture API');
     });
 
     // 404 Handler
-    app.use((req, res) => {
+    app.use((req: Request, res: Response) => {
         sendResponse(res, 404, false, 'Route not found');
     });
 
     return app;
 };
-
-module.exports = createApp;

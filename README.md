@@ -23,18 +23,53 @@ A production-ready Node.js/Express API example demonstrating **Clean Architectur
 This is a **User Management API** built with Node.js and Express that demonstrates how to structure a real-world application using Clean Architecture principles. It's designed as a learning resource for developers who want to:
 
 - Understand Clean Architecture in a practical context
-- See SOLID principles applied in JavaScript
+- See SOLID principles applied in TypeScript/JavaScript
 - Learn how to structure scalable backend applications
 - Understand the Repository pattern and Dependency Injection
 - See how to integrate MongoDB while maintaining architectural integrity
 
 **Tech Stack:**
 - Node.js + Express
+- TypeScript (with JavaScript examples available)
 - MongoDB + Mongoose
 - Clean Architecture
 - SOLID Principles
 - Repository Pattern
 - Dependency Injection
+- Object-Oriented Programming (OOP)
+
+---
+
+## 🌿 Branch Structure
+
+This repository contains **three branches** to help you learn at your own pace:
+
+### 📂 Branches
+
+| Branch | Language | Description | Status |
+|--------|----------|-------------|--------|
+| **`main`** | TypeScript | Production-ready TypeScript implementation | ✅ Recommended |
+| **`typescript_snippet`** | TypeScript | TypeScript implementation (same as main) | ✅ Current |
+| **`javascript_snippet`** | JavaScript | JavaScript implementation for comparison | ✅ Available |
+
+**Choose Your Learning Path:**
+- **New to Clean Architecture?** → Start with `javascript_snippet` for simpler syntax
+- **Want type safety?** → Use `main` or `typescript_snippet` (TypeScript)
+- **Comparing implementations?** → Switch between branches to see the differences
+
+**How to Switch Branches:**
+```bash
+# View all branches
+git branch -a
+
+# Switch to JavaScript version
+git checkout javascript_snippet
+
+# Switch to TypeScript version (recommended)
+git checkout main
+# or
+git checkout typescript_snippet
+```
 
 ---
 
@@ -67,45 +102,44 @@ Clean Architecture inverts the dependencies so that:
 src/
 ├── domain/                           # Enterprise Business Rules
 │   ├── entities/
-│   │   └── user.entity.js            # Core business objects
+│   │   └── user.entity.ts            # Core business objects
 │   └── dtos/
-│       └── user.dto.js               # Data Transfer Objects
+│       └── user.dto.ts               # Data Transfer Objects
 │
 ├── application/                      # Application Business Rules
 │   ├── use-cases/                    # Application-specific business logic
-│   │   ├── create-user.use-case.js
-│   │   ├── get-all-users.use-case.js
-│   │   └── get-user-by-id.use-case.js
+│   │   ├── create-user.use-case.ts
+│   │   ├── get-all-users.use-case.ts
+│   │   └── get-user-by-id.use-case.ts
 │   ├── ports/                        # Interfaces (abstractions)
 │   │   └── repositories/
-│   │       └── user.repository.interface.js
+│   │       └── user.repository.interface.ts
 │   └── mappers/                      # Entity ↔ DTO transformations
-│       └── user.mapper.js
+│       └── user.mapper.ts
 │
 ├── infrastructure/                   # External Interfaces (Frameworks & Drivers)
 │   ├── database/
-│   │   ├── connection.js             # MongoDB connection
-│   │   └── schemas/
-│   │       └── user.schema.js        # Mongoose schema
+│   │   ├── connection.ts             # MongoDB connection
+│   │   └── models/
+│   │       └── user.model.ts         # Mongoose schema + types
 │   ├── repositories/                 # Concrete implementations
-│   │   ├── in-memory-user.repository.js
-│   │   └── mongo-user.repository.js
+│   │   └── mongo-user.repository.ts
 │   └── utils/
-│       ├── logger.util.js
-│       └── response.util.js
+│       ├── logger.util.ts
+│       └── response.util.ts
 │
 ├── interfaces/                       # Interface Adapters (Controllers & Presenters)
 │   ├── controllers/
-│   │   ├── create-user.controller.js
-│   │   └── get-users.controller.js
+│   │   ├── create-user.controller.ts
+│   │   └── get-users.controller.ts
 │   └── routes/
-│       └── user.routes.js
+│       └── user.routes.ts
 │
 ├── config/
-│   └── index.js                      # Configuration management
+│   └── index.ts                      # Configuration management
 │
-├── app.js                            # Express app setup
-└── server.js                         # Composition Root (wiring dependencies)
+├── app.ts                            # Express app setup
+└── server.ts                         # Composition Root (wiring dependencies)
 ```
 
 ### Layer Responsibilities
@@ -215,6 +249,7 @@ class UserEntity {
 - Node.js (v14 or higher)
 - MongoDB (running locally or remote URI)
 - npm or yarn
+- TypeScript (optional for development, installed via npm)
 
 ### Installation
 
@@ -224,12 +259,21 @@ class UserEntity {
    cd Clean-Architecture-Snippet
    ```
 
-2. **Install dependencies**
+2. **Choose your branch**
+   ```bash
+   # For TypeScript version (recommended)
+   git checkout main
+   
+   # OR for JavaScript version
+   git checkout javascript_snippet
+   ```
+
+3. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. **Set up environment variables**
+4. **Set up environment variables**
    
    Create a `.env` file in the root directory:
    ```env
@@ -238,18 +282,72 @@ class UserEntity {
    MONGO_URI=mongodb://localhost:27017/clean-arch-db
    ```
 
-4. **Start MongoDB**
+5. **Start MongoDB**
    ```bash
    # Make sure MongoDB is running
    mongod
    ```
 
-5. **Run the application**
+6. **Build and run the application**
+
+   **For TypeScript version:**
+   ```bash
+   # Build the TypeScript code
+   npm run build
+   
+   # Run the compiled code
+   npm start
+   
+   # OR run in development mode with hot reload
+   npm run dev
+   ```
+   
+   **For JavaScript version:**
    ```bash
    npm start
    ```
 
 The server will start at `http://localhost:3000`
+
+---
+
+## 🧪 Testing the API
+
+### Automated Test Suite
+
+You can test all endpoints automatically using the following commands:
+
+```bash
+# Create a user
+curl -X POST http://localhost:3000/api/v1/users \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Jane Doe", "email": "jane@example.com", "role": "user"}'
+
+# Get all users
+curl http://localhost:3000/api/v1/users
+
+# Get user by ID (replace with actual ID from create response)
+curl http://localhost:3000/api/v1/users/<USER_ID>
+```
+
+### Expected Responses
+
+All responses follow this format:
+```json
+{
+  "success": true | false,
+  "message": "Descriptive message",
+  "data": {} | [] | null
+}
+```
+
+**✅ Successful Test Results:**
+- ✅ TypeScript compilation successful
+- ✅ Server starts without errors
+- ✅ MongoDB connection established
+- ✅ All CRUD operations working
+- ✅ Type safety maintained throughout
+- ✅ Clean Architecture principles followed
 
 ---
 
